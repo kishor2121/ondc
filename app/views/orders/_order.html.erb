@@ -1,0 +1,8 @@
+<div id="<%= dom_id(order) %>">
+  <h4>Order #<%= order.id %> — <span id="order_<%= order.id %>_status"><%= order.status %></span></h4>
+  <ul>
+    <% order.order_items.each do |oi| %>
+      <li><%= oi.product.title %> x <%= oi.quantity %> — <%= number_to_currency(oi.price_cents/100.0, unit: "₹") %></li>
+    <% end %>
+  </ul>
+</div>

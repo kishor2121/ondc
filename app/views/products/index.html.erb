@@ -1,0 +1,70 @@
+<style>
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .product-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .product-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .add-to-cart-btn {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .add-to-cart-btn:hover {
+    background-color: #2563eb;
+  }
+</style>
+
+<div class="products-grid">
+  <% @products.each do |product| %>
+    <div class="product-card">
+      <% if product.image.attached? %>
+        <%= image_tag product.image.variant(resize_to_limit: [150, 150]), class: "product-image" %>
+      <% else %>
+        <img src="https://via.placeholder.com/150" alt="<%= product.title %>" class="product-image" />
+      <% end %>
+
+      <h2><%= product.title %></h2>
+      <p><%= product.description %></p>
+      <p style="color: green; font-weight: bold; margin-bottom: 1rem;">₹<%= product.price_cents / 100.0 %></p>
+
+      <% if user_signed_in? %>
+        <%= button_to cart_items_path(product_id: product.id), method: :post, class: "add-to-cart-btn" do %>
+          🛒 Add to Cart
+        <% end %>
+      <% else %>
+        <%= link_to "Sign in to buy", new_user_session_path, style: "color: #3b82f6; font-weight: 600;" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+

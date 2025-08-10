@@ -1,0 +1,8 @@
+<!-- app/views/products/_product.html.erb -->
+<turbo-frame id="product_<%= product.id %>">
+  <div class="product">
+    <h3><%= product.title %></h3>
+    <p>₹<%= product.price_cents / 100.0 %></p>
+    <%= button_to "Add to Cart", cart_items_path(product_id: product.id), method: :post, data: { turbo_frame: "_top" } %>
+  </div>
+</turbo-frame>

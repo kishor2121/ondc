@@ -1,0 +1,6 @@
+<h1>Your Orders</h1>
+<%= turbo_stream_from "orders" %> <!-- subscribe to global orders stream (simple) -->
+
+<div id="orders_list">
+  <%= render @orders %>
+</div>

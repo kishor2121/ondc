@@ -1,0 +1,20 @@
+<% cart ||= Cart.new %>
+<div id="cart_panel" data-controller="cart">
+  <h3>Cart</h3>
+  <% if cart && cart.cart_items.any? %>
+    <ul>
+      <% cart.cart_items.each do |item| %>
+        <li id="<%= dom_id(item) %>">
+          <%= item.product.title %> - <%= item.quantity %> x <%= number_to_currency(item.product.price, unit: "₹") %>
+          <%= button_to "Remove", cart_item_path(item), method: :delete, data: { turbo_confirm: "Remove item?" } %>
+        </li>
+      <% end %>
+    </ul>
+    <p><strong>Total:</strong> <%= number_to_currency(cart.cart_items.sum { |i| i.subtotal_cents }/100.0, unit: "₹") %></p>
+    <%= form_with url: orders_path, method: :post, data: { turbo_confirm: "Place order?" } do %>
+      <%= submit_tag "Checkout", class: "btn-primary" %>
+    <% end %>
+  <% else %>
+    <p>Cart empty</p>
+  <% end %>
+</div>

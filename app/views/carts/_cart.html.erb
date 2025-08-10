@@ -1,0 +1,24 @@
+<turbo-frame id="cart">
+  <% cart.cart_items.each do |item| %>
+    <div id="cart_item_<%= item.id %>" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+      
+      <% if item.product.image.attached? %>
+        <%= image_tag item.product.image.variant(resize_to_limit: [80, 80]), alt: item.product.title, style: "border-radius: 8px;" %>
+      <% else %>
+        <img src="https://via.placeholder.com/80" alt="<%= item.product.title %>" style="border-radius: 8px;" />
+      <% end %>
+
+      <div>
+        <strong><%= item.product.title %></strong><br />
+        Qty: <%= item.quantity %>
+      </div>
+
+      <div>
+        <%= button_to "+", cart_item_path(item, quantity: item.quantity + 1), method: :patch, form: { data: { turbo_frame: "cart" } } %>
+        <%= button_to "-", cart_item_path(item, quantity: item.quantity - 1), method: :patch, form: { data: { turbo_frame: "cart" } } %>
+        <%= button_to "Remove", cart_item_path(item), method: :delete, form: { data: { turbo_frame: "cart" } } %>
+      </div>
+
+    </div>
+  <% end %>
+</turbo-frame>
